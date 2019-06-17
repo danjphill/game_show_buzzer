@@ -1,46 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/tools">
+
     <LinearLayout
+        android:id="@+id/e_ip_ip_port_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:orientation="vertical">
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        android:orientation="horizontal">
+
+    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        android:layout_marginBottom="10dp"
+        android:id="@+id/e_ip_address"
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:labelText="IP ADDRESS"
+        app:secondaryColor="@color/colorPrimary"
+        app:helperTextColor="#FEFEFE"
+        app:maxCharacters="30">
+
+        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/qr_code_icon"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SCAN CODE HERE "
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="#b6b6b6"
+            android:text="" />
+
+    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+
+    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        android:id="@+id/e_ip_port"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:labelText="PORT"
+        app:secondaryColor="@color/colorPrimary"
+        app:helperTextColor="#FEFEFE"
+        app:maxCharacters="30">
+
+        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/qr_code_icon"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ENTER ADDRESS"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        
-        
-    </LinearLayout>
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="#b6b6b6"
+            android:text="" />
 
+    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+</LinearLayout>
 
-
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/main_connect"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        fancy:fb_borderColor="#272732"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#9c9c9c"
+        fancy:fb_focusColor="#b6b6b6"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="5dp"
+        fancy:fb_text="CONNECT"
+        fancy:fb_textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/e_ip_ip_port_layout"
+        />
 </RelativeLayout>

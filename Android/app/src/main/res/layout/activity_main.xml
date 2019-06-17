@@ -8,6 +8,36 @@
     android:background="#272732"
     tools:context=".MainActivity">
 
+
+
+    <!--<studio.carbonylgroup.textfieldboxes.TextFieldBoxes-->
+        <!--android:id="@+id/text_field_boxes"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:labelText="Team Name"-->
+        <!--android:layout_marginBottom="40dp"-->
+        <!--/>-->
+
+
+    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        android:id="@+id/text_field_boxes1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelText="Team Name"
+        app:secondaryColor="@color/colorPrimary"
+        app:helperTextColor="#FEFEFE"
+        app:maxCharacters="30">
+
+        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="#b6b6b6"
+            android:text="" />
+
+    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/btn_spotify"
         android:layout_width="200dp"
@@ -15,7 +45,7 @@
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="10dp"
+        android:layout_marginTop="50dp"
         fancy:fb_borderColor="#272732"
         fancy:fb_borderWidth="1dp"
         fancy:fb_defaultColor="#9c9c9c"

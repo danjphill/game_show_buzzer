@@ -1,6 +1,9 @@
-from flask import Flask, request,jsonify
+from flask import Flask, request,jsonify,send_file
 import socket, datetime
 import sqlite3
+import qrcode
+
+#Backend Server to To Work With Buzzer App
 
 # Status codes: 
 # 001 - Could Not Connect
@@ -23,6 +26,12 @@ def db_init():
 @app.route('/')
 def hello_world():
    return 'Game Show Buzzer Server @ {}'.format(get_ip())
+
+@app.route('/code')
+def get_code():
+	img = qrcode.make(get_ip())
+   	return send_file(img, mimetype='image/jpeg')
+
 
 @app.route('/latency', methods=['POST'])
 def latency_test():

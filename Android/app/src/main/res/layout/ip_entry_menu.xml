@@ -10,6 +10,7 @@
         android:orientation="vertical">
         
         <LinearLayout
+            android:id="@+id/ip_e_menu_scan_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -24,6 +25,7 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ip_e_menu_enter_ip_btn"
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

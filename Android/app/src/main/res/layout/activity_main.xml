@@ -20,7 +20,7 @@
 
 
     <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
-        android:id="@+id/text_field_boxes1"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:labelText="Team Name"
@@ -29,6 +29,7 @@
         app:maxCharacters="30">
 
         <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            android:id="@+id/main_team_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"

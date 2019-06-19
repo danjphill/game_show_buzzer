@@ -17,6 +17,7 @@
               android:layout_height="wrap_content"
               android:text="Session"/>
           <TextView
+              android:id="@+id/buzzer_season"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
@@ -35,6 +36,7 @@
           android:layout_alignParentEnd="true"
           android:text="Question"/>
           <TextView
+              android:id="@+id/buzzer_question"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignParentEnd="true"
@@ -43,6 +45,7 @@
       </LinearLayout>
   </RelativeLayout>
     <TextView
+        android:id="@+id/buzzer_status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

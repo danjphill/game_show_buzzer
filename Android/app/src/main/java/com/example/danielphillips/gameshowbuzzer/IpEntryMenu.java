@@ -1,5 +1,6 @@
 package com.example.danielphillips.gameshowbuzzer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,9 @@ public class IpEntryMenu extends AppCompatActivity {
         EnterIpAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent EnterIpIntent = new Intent(IpEntryMenu.this,EnterIp.class);
+                startActivity(EnterIpIntent);
+                finish();
 
             }
         });

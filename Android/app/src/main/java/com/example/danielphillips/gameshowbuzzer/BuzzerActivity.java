@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,14 +84,15 @@ public class BuzzerActivity extends AppCompatActivity {
         conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
         DateTime dateTime = new DateTime();
+        DateTimeFormatter dtfOut = DateTimeFormat.forPattern("MM/dd/yy HH:mm:ss.SSSSSS");
 
         // 2. build JSON object
         JSONObject jsonObject = new JSONObject();
         jsonObject.accumulate("ip",getIPAddress(true) );
         jsonObject.accumulate("username",  TeamName);
-        jsonObject.accumulate("sent_time", dateTime.toString());
+        jsonObject.accumulate("sent_time", dateTime.toString("MM/dd/yy HH:mm:ss.SSSSSS"));
         jsonObject.accumulate("question", QuestionText.getText().toString() );
-        jsonObject.accumulate("touch_time", dateTime.toString());
+        jsonObject.accumulate("touch_time",dateTime.toString("MM/dd/yy HH:mm:ss.SSSSSS"));
         jsonObject.accumulate("session", SeasonText.getText().toString());
 
         // 3. add JSON content to POST request body
@@ -131,7 +134,7 @@ public class BuzzerActivity extends AppCompatActivity {
     }
 
     private void GetWinner(){
-        Type = "ring_buzzer";
+        Type = "get_winner";
         new RetrieveFeedTask().execute();
     }
 

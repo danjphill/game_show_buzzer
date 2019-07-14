@@ -6,6 +6,8 @@ public class Constants {
    static String IP_PORT = "IP_PORT";
    static String SEASON_NUMBER = "SEASON_NUMBER";
    static String QUESTION_NUMBER = "QUESTION_NUMBER";
+
+   static String PREFERENCES = "PREFERENCES"
 ;
 
 }

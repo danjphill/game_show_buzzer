@@ -83,7 +83,7 @@ def connect():
 		"result": result_msg}})
    	return result
 
-@app.route('/ring_buzzer')
+@app.route('/ring_buzzer', methods=['POST'])
 def ring_buzzer():
 	if not request.json or "ip" not in request.json or "username" not in request.json:
 		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
@@ -126,7 +126,7 @@ def ring_buzzer():
 def reset():
    return 'Not Implemented'
 
-@app.route('/get_winner')
+@app.route('/get_winner', methods=['POST'])
 def get_data():
 	if not request.json or "ip" not in request.json or "username" not in request.json:
 		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
@@ -148,7 +148,7 @@ def get_data():
 		   	lowest_ip = "Null"
 		   	print matching_records
 		   	for results in matching_records:
-		   		entry_datetime = datetime.datetime.strptime(results[1],"%m/%d/%y %H:%M:%S")
+		   		entry_datetime = datetime.datetime.strptime(results[1],"%m/%d/%y %H:%M:%S.%f")
 		   		print entry_datetime
 		   		time_diff = datetime.datetime.now() - entry_datetime
 		   		if (((time_diff.total_seconds()) < lowest_time) and lowest_time != -1):

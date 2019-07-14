@@ -27,25 +27,25 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent IpEntryMenuIntent = new Intent(MainActivity.this, IpEntryMenu.class);
                 IpEntryMenuIntent.putExtra(Constants.TeamName,TeamName.getText().toString());
-                SavePreferences(MainActivity.this,TeamName.getText().toString());
+                PreferencesHandler.SavePreferences(MainActivity.this,Constants.TeamName,TeamName.getText().toString());
                 startActivity(IpEntryMenuIntent);
                 finish();
 
             }
         });
     }
-
-    void SavePreferences(Context context, String TeamName){
-        SharedPreferences sharedPref = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putString(Constants.TeamName, TeamName);
-//        editor.putString("passwordhash", "somerandompasswordhash");
-
-        editor.apply();
-        Toast.makeText(context, "Team Name Save", Toast.LENGTH_LONG).show();
-
-
-
-    }
+//
+//    void SavePreferences(Context context, String TeamName){
+//        SharedPreferences sharedPref = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//
+//        editor.putString(Constants.TeamName, TeamName);
+////        editor.putString("passwordhash", "somerandompasswordhash");
+//
+//        editor.apply();
+//        Toast.makeText(context, "Team Name Save", Toast.LENGTH_LONG).show();
+//
+//
+//
+//    }
 }

@@ -43,9 +43,12 @@ public class EnterIp extends AppCompatActivity {
         setContentView(R.layout.enter_ip);
 
         IpPort = findViewById(R.id.e_ip_port);
-        TeamName = LoadPreference(EnterIp.this,Constants.TeamName);
+        TeamName = PreferencesHandler.LoadPreference(EnterIp.this,Constants.TeamName);
         IpAddress = findViewById(R.id.e_ip_address);
         FancyButton Connect = findViewById(R.id.e_ip_connect);
+
+        IpAddress.setText(PreferencesHandler.LoadPreference(EnterIp.this,Constants.IP_ADDRESS));
+        IpPort.setText(PreferencesHandler.LoadPreference(EnterIp.this,Constants.IP_PORT));
 
         Connect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,14 +123,14 @@ public class EnterIp extends AppCompatActivity {
         os.close();
     }
 
-    private String LoadPreference(Context context,String itemName){
-        //TODO: Convert To Constant >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>v
-        SharedPreferences sharedPref = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-
-        String loadedString = sharedPref.getString(itemName, "");
-        return loadedString;
-
-    }
+//    private String LoadPreference(Context context,String itemName){
+//        //TODO: Convert To Constant >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>v
+//        SharedPreferences sharedPref = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+//
+//        String loadedString = sharedPref.getString(itemName, "");
+//        return loadedString;
+//
+//    }
 
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String > {
@@ -175,6 +178,8 @@ public class EnterIp extends AppCompatActivity {
                     BuzzerActivityIntent.putExtra(Constants.SEASON_NUMBER,"1");
                     BuzzerActivityIntent.putExtra(Constants.QUESTION_NUMBER,"1");
                     startActivity(BuzzerActivityIntent);
+                    PreferencesHandler.SavePreferences(EnterIp.this,Constants.IP_ADDRESS,IpAddress.getText().toString());
+                    PreferencesHandler.SavePreferences(EnterIp.this,Constants.IP_PORT,IpPort.getText().toString());
                 }
 
 

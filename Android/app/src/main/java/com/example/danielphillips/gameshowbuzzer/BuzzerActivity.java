@@ -2,6 +2,7 @@ package com.example.danielphillips.gameshowbuzzer;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 import static com.example.danielphillips.gameshowbuzzer.IPHandler.getIPAddress;
 
 public class BuzzerActivity extends AppCompatActivity {
@@ -39,6 +42,10 @@ public class BuzzerActivity extends AppCompatActivity {
     TextView StatusText ;
     TextView TeamNameText;
     RelativeLayout Layout;
+    FancyButton Reset;
+    MediaPlayer mp;
+    Boolean BellRang;
+
 
 
     @Override
@@ -50,6 +57,7 @@ public class BuzzerActivity extends AppCompatActivity {
        QuestionText = findViewById(R.id.buzzer_question);
         StatusText = findViewById(R.id.buzzer_status_text);
         TeamNameText = findViewById(R.id.buzzer_team_name);
+        Reset = findViewById(R.id.buzzer_reset);
         Layout = findViewById(R.id.buzzer_layout);
 
         Intent intent = getIntent();
@@ -58,6 +66,9 @@ public class BuzzerActivity extends AppCompatActivity {
         IP_ADDRESS = intent.getStringExtra(Constants.IP_ADDRESS);
         String Season_number = intent.getStringExtra(Constants.SEASON_NUMBER);
         String Question_number = intent.getStringExtra(Constants.QUESTION_NUMBER);
+        BellRang = false;
+
+         mp = MediaPlayer.create(this, R.raw.chime);
 
         SeasonText.setText(Season_number);
         QuestionText.setText(Question_number);
@@ -67,7 +78,23 @@ public class BuzzerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Type = "ring_buzzer";
-                new RetrieveFeedTask().execute();
+                if (!BellRang) {
+                    BellRang = true;
+                    new RetrieveFeedTask().execute();
+                }
+            }
+        });
+
+        Reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String CurrentQuestion = QuestionText.getText().toString();
+                QuestionText.setText(String.valueOf(Integer.parseInt(CurrentQuestion)+1));
+                Layout.setBackgroundColor(Color.LTGRAY);
+                StatusText.setText("READY!");
+                Reset.setVisibility(View.GONE);
+                BellRang = false;
+
             }
         });
 
@@ -154,7 +181,6 @@ public class BuzzerActivity extends AppCompatActivity {
             }
         }
 
-
         protected void onPostExecute(String result) {
         // TODO: check this.exception
         // TODO: do something with the feed
@@ -179,6 +205,7 @@ public class BuzzerActivity extends AppCompatActivity {
 
 
             if (status.equals("004") && Type.equals("ring_buzzer")){
+                mp.start();
                 GetWinner();
             }else if (status.equals("006") && Type.equals("get_winner")){
                 String winning_ip = result_obj.getString("winning_ip");
@@ -189,6 +216,7 @@ public class BuzzerActivity extends AppCompatActivity {
                     Layout.setBackgroundColor(Color.RED);
                     StatusText.setText("BETTER LUCK NEXT TIME");
                 }
+                Reset.setVisibility(View.VISIBLE);
             }
 
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/buzzer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout android:id="@+id/buzzer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -58,4 +59,29 @@
         android:layout_centerInParent="true"
         android:textSize="30dp"
         android:text="READY!"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/buzzer_reset"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        fancy:fb_borderColor="#272732"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#9c9c9c"
+        fancy:fb_focusColor="#b6b6b6"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="5dp"
+        fancy:fb_text="RESET"
+        fancy:fb_textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/buzzer_status_text"
+        android:visibility="gone"
+
+
+        />
 </RelativeLayout>

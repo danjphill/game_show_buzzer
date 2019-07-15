@@ -144,23 +144,24 @@ def get_data():
 			c = conn.cursor()
 			c.execute('SELECT * FROM records WHERE session={} AND question={}'.format(session,question))
 			matching_records = c.fetchall()
-		   	lowest_time = -1
-		   	lowest_ip = "Null"
+		   	highest_time = 9999999
+		   	highest_ip = "Null"
 		   	print matching_records
 		   	for results in matching_records:
 		   		entry_datetime = datetime.datetime.strptime(results[1],"%m/%d/%y %H:%M:%S.%f")
 		   		print entry_datetime
 		   		time_diff = datetime.datetime.now() - entry_datetime
-		   		if (((time_diff.total_seconds()) < lowest_time) and lowest_time != -1):
-		   			lowest_time = time_diff.total_seconds()
-		   			lowest_ip = results[4]
-		   			print lowest_ip
-		   		else:
-		   			lowest_time = time_diff.total_seconds()
-		   			lowest_ip = results[4]
-		   		print lowest_ip
+		   		if (highest_time == 9999999):
+		   			highest_time = time_diff.total_seconds()
+		   			highest_ip = results[4]
+		   			print highest_ip + "," + str(highest_time)
+		   		elif ((time_diff.total_seconds()) > highest_time):
+		   			highest_time = time_diff.total_seconds()
+		   			highest_ip = results[4]
+		   			print highest_ip + "," + str(highest_time)
 		result_msg = "[{}] {} - Fetched Winner".format(ip,username)
 		status_code = "006"
+		print "returned ip : " + highest_ip
 	except Exception, e:
 		result_msg = "[{}] {} - failed to get winner : {}".format(ip,username,e)
 		status_code = "005"
@@ -170,7 +171,7 @@ def get_data():
 		"status": status_code,
 		"sent_time": sent_time,
 		"return_time": return_time,
-		"winning_ip" : lowest_ip,
+		"winning_ip" : highest_ip,
 		"result": result_msg}})
    	return result
 
@@ -200,5 +201,5 @@ if __name__ == '__main__':
 		print "[database] {} - {}".format("ERR",e )
 		print "[database] {} - {}".format("MSG","Delete Database to Clear Records")
 	finally:
-   		app.run(host=get_ip(), port=9001, debug=True)
+   		app.run(host=get_ip(), port=9001, debug=True, threaded=True)
    

@@ -41,11 +41,13 @@ public class BuzzerActivity extends AppCompatActivity {
     TextView QuestionText;
     TextView StatusText ;
     TextView TeamNameText;
+    TextView RingTimeText;
     RelativeLayout Layout;
     FancyButton Reset;
     MediaPlayer mp;
     Boolean BellRang;
-
+    Boolean Ready = false;
+    int Tries = 0;
 
 
     @Override
@@ -59,6 +61,7 @@ public class BuzzerActivity extends AppCompatActivity {
         TeamNameText = findViewById(R.id.buzzer_team_name);
         Reset = findViewById(R.id.buzzer_reset);
         Layout = findViewById(R.id.buzzer_layout);
+        RingTimeText = findViewById(R.id.buzzer_ring_time);
 
         Intent intent = getIntent();
         TeamName = intent.getStringExtra(Constants.TeamName);
@@ -88,12 +91,9 @@ public class BuzzerActivity extends AppCompatActivity {
         Reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String CurrentQuestion = QuestionText.getText().toString();
-                QuestionText.setText(String.valueOf(Integer.parseInt(CurrentQuestion)+1));
-                Layout.setBackgroundColor(Color.LTGRAY);
-                StatusText.setText("READY!");
-                Reset.setVisibility(View.GONE);
-                BellRang = false;
+                Type = "i_am_ready";
+                new RetrieveFeedTask().execute();
+
 
             }
         });
@@ -115,7 +115,7 @@ public class BuzzerActivity extends AppCompatActivity {
 
         // 2. build JSON object
         JSONObject jsonObject = new JSONObject();
-        jsonObject.accumulate("ip",getIPAddress(true) );
+        jsonObject.accumulate("ip",getIPAddress(BuzzerActivity.this, true) );
         jsonObject.accumulate("username",  TeamName);
         jsonObject.accumulate("sent_time", dateTime.toString("MM/dd/yy HH:mm:ss.SSSSSS"));
         jsonObject.accumulate("question", QuestionText.getText().toString() );
@@ -164,6 +164,10 @@ public class BuzzerActivity extends AppCompatActivity {
         Type = "get_winner";
         new RetrieveFeedTask().execute();
     }
+    private void CheckIfEveryoneIsReady(){
+        Type = "is_everyone_ready";
+        new RetrieveFeedTask().execute();
+    }
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String > {
 
@@ -187,14 +191,21 @@ public class BuzzerActivity extends AppCompatActivity {
         Log.d("Result : ", result);
         Log.d("EnterIP : Response", response);
         try {
+
             JSONObject obj = new JSONObject(response);
-            String result_msg = obj.getString("result");
-            JSONObject result_obj = new JSONObject(result_msg);
+            String result_full = obj.getString("result");
+            JSONObject result_obj = new JSONObject(result_full);
             String ip = result_obj.getString("ip");
+            String result_msg = result_obj.getString("result");
 
             String return_time = result_obj.getString("return_time");
             String sent_time = result_obj.getString("sent_time");
             String status = result_obj.getString("status");
+            String question_number = "0";
+            if(status.equals("010")&&Type.equals("is_everyone_ready")) {
+                question_number = result_obj.getString("question_number");
+            }
+
 
 
             Log.d("ip : ", ip);
@@ -205,18 +216,56 @@ public class BuzzerActivity extends AppCompatActivity {
 
 
             if (status.equals("004") && Type.equals("ring_buzzer")){
+                Ready = false;
                 mp.start();
                 GetWinner();
             }else if (status.equals("006") && Type.equals("get_winner")){
                 String winning_ip = result_obj.getString("winning_ip");
-                if (winning_ip.equals(IPHandler.getIPAddress(true))){
+                if (winning_ip.equals(IPHandler.getIPAddress(BuzzerActivity.this, true))){
                     Layout.setBackgroundColor(Color.GREEN);
-                    StatusText.setText("WINER!!!");
+                    StatusText.setText("WINNER!!!");
+                    RingTimeText.setText(sent_time.split(" ")[1]);
+                    RingTimeText.setVisibility(View.VISIBLE);
                 }else{
                     Layout.setBackgroundColor(Color.RED);
                     StatusText.setText("BETTER LUCK NEXT TIME");
                 }
+                Reset.setText("NEXT QUESTION");
                 Reset.setVisibility(View.VISIBLE);
+
+            }else if(status.equals("008") && Type.equals("i_am_ready")){
+                String CurrentQuestion = QuestionText.getText().toString();
+                QuestionText.setVisibility(View.GONE);
+                Layout.setBackgroundColor(Color.LTGRAY);
+                Reset.setVisibility(View.GONE);
+                RingTimeText.setVisibility(View.GONE);
+                CheckIfEveryoneIsReady();
+            }else if(status.equals("009")&&Type.equals("is_everyone_ready")){
+                StatusText.setText(result_msg);
+                Ready = false;
+                try {
+                    Tries += 1;
+                    if (Tries < 50) {
+                        Thread.sleep(1000);
+                        CheckIfEveryoneIsReady();
+                    }else if(Tries < 100){
+                        Thread.sleep(3000);
+                        CheckIfEveryoneIsReady();
+                    }else if(Tries < 200){
+                    Thread.sleep(5000);
+                    CheckIfEveryoneIsReady();
+                }
+                } catch (InterruptedException e) {
+
+                }
+            }else if(status.equals("010")&&Type.equals("is_everyone_ready")){
+                Ready = true;
+                BellRang = false;
+                StatusText.setText("READY!!");
+                Tries = 0;
+                QuestionText.setText(question_number);
+                QuestionText.setVisibility(View.VISIBLE);
+
             }
 
 

@@ -53,12 +53,21 @@
       </LinearLayout>
   </RelativeLayout>
     <TextView
+        android:id="@+id/buzzer_ring_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/buzzer_status_text"
+        android:textSize="15dp"
+        android:visibility="gone"
+        android:text="READY!"/>
+    <TextView
         android:id="@+id/buzzer_status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="30dp"
-        android:text="READY!"/>
+        android:text="WELCOME !"/>
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:layout_centerInParent="true"

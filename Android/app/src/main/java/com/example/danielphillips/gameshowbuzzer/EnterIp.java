@@ -81,7 +81,7 @@ public class EnterIp extends AppCompatActivity {
 
         // 2. build JSON object
         JSONObject jsonObject = new JSONObject();
-        jsonObject.accumulate("ip",getIPAddress(true) );
+        jsonObject.accumulate("ip",getIPAddress(EnterIp.this, true) );
         jsonObject.accumulate("username",  TeamName);
         jsonObject.accumulate("sent_time", dateTime.toString());
 
@@ -163,12 +163,13 @@ public class EnterIp extends AppCompatActivity {
                 String return_time = result_obj.getString("return_time");
                 String sent_time = result_obj.getString("sent_time");
                 String status = result_obj.getString("status");
-
+                String question_number = result_obj.getString("question_number");
                 Log.d("ip : ", ip);
                 Log.d("result_msg : ", result_msg);
                 Log.d("return_time : ", return_time);
                 Log.d("sent_time : ", sent_time);
                 Log.d("status : ", status);
+                Log.d("question_number : ", question_number);
 
                 if (status.equals("002")){
                     Intent BuzzerActivityIntent = new Intent(EnterIp.this,BuzzerActivity.class);
@@ -176,7 +177,7 @@ public class EnterIp extends AppCompatActivity {
                     BuzzerActivityIntent.putExtra(Constants.IP_PORT,IpPort.getText().toString());
                     BuzzerActivityIntent.putExtra(Constants.TeamName,TeamName);
                     BuzzerActivityIntent.putExtra(Constants.SEASON_NUMBER,"1");
-                    BuzzerActivityIntent.putExtra(Constants.QUESTION_NUMBER,"1");
+                    BuzzerActivityIntent.putExtra(Constants.QUESTION_NUMBER,question_number);
                     startActivity(BuzzerActivityIntent);
                     PreferencesHandler.SavePreferences(EnterIp.this,Constants.IP_ADDRESS,IpAddress.getText().toString());
                     PreferencesHandler.SavePreferences(EnterIp.this,Constants.IP_PORT,IpPort.getText().toString());

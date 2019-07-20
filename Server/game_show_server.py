@@ -1,7 +1,8 @@
-from flask import Flask, request,jsonify,send_file
+from flask import Flask, request,jsonify,send_file,render_template
 import socket, datetime
 import sqlite3
 import qrcode
+import PySimpleGUI27 as sg
 
 #Backend Server to To Work With Buzzer App
 
@@ -17,20 +18,40 @@ import qrcode
 database_name = "database"
 app = Flask(__name__)
 
+
+status = "Loading...."
+first_user = ""
+ready_list = []
+connected_list = []
+question_number = ""
+
 def db_init():
 	with sqlite3.connect("{}.db".format(database_name)) as conn:
 		c = conn.cursor()
 		c.execute('''CREATE TABLE records
-	             (username text, touch_time text, question text, session text, ip text, entry_time text)''')
+				 (username text, touch_time text, question text, session text, ip text, entry_time text)''')
+
+@app.route('/gui/<session>/<question>', methods=['POST','GET'])
+def gui(session,question):
+	next_question = str(int(question) + 1)
+	# session = request.args['session']
+	# question = request.args['question']
+	with sqlite3.connect("{}.db".format(database_name)) as conn:
+		c = conn.cursor()
+		c.execute('SELECT * FROM records WHERE session={} AND question={}'.format(session,question))
+		matching_records = c.fetchall()
+		print matching_records
+
+	return render_template('gui.html', matching_records=matching_records, question=question,session=session,next_question=next_question)
 
 @app.route('/')
 def hello_world():
-   return 'Game Show Buzzer Server @ {}'.format(get_ip())
+	return 'Game Show Buzzer Server @ {}'.format(get_ip())
 
 @app.route('/code')
 def get_code():
 	img = qrcode.make(get_ip())
-   	return send_file(img, mimetype='image/jpeg')
+	return send_file(img, mimetype='image/jpeg')
 
 
 @app.route('/latency', methods=['POST'])
@@ -46,10 +67,42 @@ def latency_test():
 		"ip": ip,
 		"sent_time": sent_time,
 		"return_time": return_time}})
-   	return result
+	return result
+
+@app.route('/is_everyone_ready', methods=['POST'])
+def is_everyone_ready():
+	if not request.json or "ip" not in request.json or "username" not in request.json:
+		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
+	ip = request.json['ip']
+	everyone_ready = False
+	username = request.json['username']
+	status_code = "002"
+	if len(ready_list) == len(connected_list):
+		everyone_ready = True
+	result = jsonify({"result": {
+		"everyone_ready": everyone_ready,
+		"status_code": status_code}})
+	return result
+
+@app.route('/i_am_ready', methods=['POST'])
+def i_am_ready():
+	if not request.json or "ip" not in request.json or "username" not in request.json:
+		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
+	ip = request.json['ip']
+	username = request.json['username']
+	status_code = "002"
+	ready_list.append(username)
+	result = jsonify({"result": {
+		"status_code": status_code,
+		"question_number": question_number}})
+	return result
+
+
+
 
 @app.route('/connect', methods=['POST'])
 def connect():
+	global connected_list
 	if not request.json or "ip" not in request.json or "username" not in request.json:
 		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
 	
@@ -69,6 +122,7 @@ def connect():
 			conn.commit()
 			# conn.close()
 			result_msg = "[{}] {} - connected ".format(ip,username)
+			connected_list.append(username)
 			status_code = "002"
 	except Exception, e:
 		result_msg = "[{}] {} - failed to connect : {}".format(ip,username,e)
@@ -81,7 +135,7 @@ def connect():
 		"sent_time": sent_time,
 		"return_time": return_time,
 		"result": result_msg}})
-   	return result
+	return result
 
 @app.route('/ring_buzzer', methods=['POST'])
 def ring_buzzer():
@@ -119,7 +173,7 @@ def ring_buzzer():
 		"sent_time": sent_time,
 		"return_time": return_time,
 		"result": result_msg}})
-   	return result
+	return result
    
 
 @app.route('/reset')
@@ -144,21 +198,21 @@ def get_data():
 			c = conn.cursor()
 			c.execute('SELECT * FROM records WHERE session={} AND question={}'.format(session,question))
 			matching_records = c.fetchall()
-		   	highest_time = 9999999
-		   	highest_ip = "Null"
-		   	print matching_records
-		   	for results in matching_records:
-		   		entry_datetime = datetime.datetime.strptime(results[1],"%m/%d/%y %H:%M:%S.%f")
-		   		print entry_datetime
-		   		time_diff = datetime.datetime.now() - entry_datetime
-		   		if (highest_time == 9999999):
-		   			highest_time = time_diff.total_seconds()
-		   			highest_ip = results[4]
-		   			print highest_ip + "," + str(highest_time)
-		   		elif ((time_diff.total_seconds()) > highest_time):
-		   			highest_time = time_diff.total_seconds()
-		   			highest_ip = results[4]
-		   			print highest_ip + "," + str(highest_time)
+			highest_time = 9999999
+			highest_ip = "Null"
+			print matching_records
+			for results in matching_records:
+				entry_datetime = datetime.datetime.strptime(results[1],"%m/%d/%y %H:%M:%S.%f")
+				print entry_datetime
+				time_diff = datetime.datetime.now() - entry_datetime
+				if (highest_time == 9999999):
+					highest_time = time_diff.total_seconds()
+					highest_ip = results[4]
+					print highest_ip + "," + str(highest_time)
+				elif ((time_diff.total_seconds()) > highest_time):
+					highest_time = time_diff.total_seconds()
+					highest_ip = results[4]
+					print highest_ip + "," + str(highest_time)
 		result_msg = "[{}] {} - Fetched Winner".format(ip,username)
 		status_code = "006"
 		print "returned ip : " + highest_ip
@@ -166,21 +220,21 @@ def get_data():
 		result_msg = "[{}] {} - failed to get winner : {}".format(ip,username,e)
 		status_code = "005"
 
-   	result = jsonify({"result": {
+	result = jsonify({"result": {
 		"ip": ip,
 		"status": status_code,
 		"sent_time": sent_time,
 		"return_time": return_time,
 		"winning_ip" : highest_ip,
 		"result": result_msg}})
-   	return result
+	return result
 
 @app.route('/print_data')
 def print_data():
 	with sqlite3.connect("{}.db".format(database_name)) as conn:
 		c = conn.cursor()
 		c.execute('SELECT * FROM records')
-	   	return str(c.fetchall())
+		return str(c.fetchall())
 
 def get_ip():
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -201,5 +255,5 @@ if __name__ == '__main__':
 		print "[database] {} - {}".format("ERR",e )
 		print "[database] {} - {}".format("MSG","Delete Database to Clear Records")
 	finally:
-   		app.run(host=get_ip(), port=9001, debug=True, threaded=True)
+		app.run(host=get_ip(), port=9001, debug=True, threaded=True)
    

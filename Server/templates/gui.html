@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    Cross Trainers
+  </a>
+</nav>
+
+<div class="card">
+  <h5 class="card-header">Results</h5>
+  <div class="card-body">
+   
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Team Name</th>
+      <th>Ring Time</th>
+      <th> Ring Date </th>
+      <th>Ip Address</th>
+    </tr>
+  </thead>
+  <tbody>
+  	 {% for item in matching_records %}
+  	 {% set date_time = item[1].split(' ') %}
+    <tr>
+      <td>{{item[0]}}</td>
+      <td>{{date_time[1]}}</td>
+      <td> {{date_time[0]}} </td>
+      <td> {{item[4]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    Status : Waiting for Team 1
+  </div>
+</div>
+
+ <div class="container">
+  
+  <div class="row">
+    <div class="col-sm-6" >
+      <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Session</h5>
+    <p class="card-text"><h1>{{session}}</h1></p>
+  </div>
+</div>
+
+    </div>
+    <div class="col-sm-6" >
+      <div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Question</h5>
+    <p class="card-text"><h1>{{question}}</h1></p>
+  </div>
+</div>
+<form method="post">
+<button type="button" onclick=window.location.href="{{ url_for('gui',question=next_question ,session=1) }}" class="btn btn-dark">Next Question</button>
+ </form>
+    </div>
+  </div>
+</div> 
+
+
+
+
+</body>
+</html>

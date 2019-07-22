@@ -28,4 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.5'
     implementation 'joda-time:joda-time:2.10.3'
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+
 }

@@ -89,8 +89,24 @@
         android:textSize="20dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/buzzer_status_text"
+        android:visibility="gone"/>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_below="@id/buzzer_status_text"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="#8C9B45"
         android:visibility="gone"
-
-
         />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@mipmap/ct_logo"
+        android:layout_centerHorizontal="true"
+       android:layout_alignParentBottom="true"
+        android:scaleType="fitCenter"/>
 </RelativeLayout>

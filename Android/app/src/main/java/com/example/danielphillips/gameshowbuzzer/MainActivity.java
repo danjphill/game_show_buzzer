@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         FancyButton NextButton = findViewById(R.id.main_next);
         final ExtendedEditText TeamName = findViewById(R.id.main_team_name);
+        TeamName.setText(PreferencesHandler.LoadPreference(MainActivity.this,Constants.TeamName));
 
         NextButton.setOnClickListener(new View.OnClickListener() {
             @Override

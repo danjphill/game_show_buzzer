@@ -28,6 +28,7 @@ first_user = ""
 ready_list = []
 connected_list = []
 question_number = 1
+winner = ""
 
 def db_init():
 	with sqlite3.connect("{}.db".format(database_name)) as conn:
@@ -75,6 +76,7 @@ def latency_test():
 
 @app.route('/is_everyone_ready', methods=['POST'])
 def is_everyone_ready():
+	global winner
 	global connected_list
 	global ready_list
 	global question_number
@@ -97,6 +99,7 @@ def is_everyone_ready():
 		everyone_ready = True
 		status_code = "010"
 		ready_list = []
+		winner = ""
 		
 	else:
 		result_msg = "WAITING FOR "
@@ -180,6 +183,7 @@ def connect():
 
 @app.route('/ring_buzzer', methods=['POST'])
 def ring_buzzer():
+	global winner
 	if not request.json or "ip" not in request.json or "username" not in request.json:
 		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
 	
@@ -192,7 +196,8 @@ def ring_buzzer():
 	question = request.json['question']
 	touch_time = request.json['touch_time']
 	session = request.json['session']
-
+	if winner == "":
+		winner = ip
 	try:
 		with sqlite3.connect("{}.db".format(database_name)) as conn:
 			c = conn.cursor()
@@ -212,7 +217,7 @@ def ring_buzzer():
 		"ip": ip,
 		"status": status_code,
 		"sent_time": sent_time,
-		"return_time": return_time,
+		"return_time": touch_time,
 		"result": result_msg}})
 	return result
    
@@ -223,6 +228,7 @@ def reset():
 
 @app.route('/get_winner', methods=['POST'])
 def get_data():
+	global winner
 	if not request.json or "ip" not in request.json or "username" not in request.json:
 		return jsonify({ "data": {}, "error": "Incorrect JSON format"  }), 400
 	
@@ -266,7 +272,7 @@ def get_data():
 		"status": status_code,
 		"sent_time": sent_time,
 		"return_time": return_time,
-		"winning_ip" : highest_ip,
+		"winning_ip" : winner,
 		"result": result_msg}})
 	return result
 
@@ -276,6 +282,14 @@ def print_data():
 		c = conn.cursor()
 		c.execute('SELECT * FROM records')
 		return str(c.fetchall())
+
+@app.route('/clear_waiting_list')
+def clear_waiting_list():
+	global ready_list
+	ready_list = []
+	return "done"
+	
+
 
 def get_ip():
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

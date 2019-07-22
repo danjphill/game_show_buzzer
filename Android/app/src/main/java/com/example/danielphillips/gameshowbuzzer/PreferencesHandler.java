@@ -14,7 +14,7 @@ public class PreferencesHandler {
 //        editor.putString("passwordhash", "somerandompasswordhash");
 
         editor.apply();
-        Toast.makeText(context, "Team Name Save", Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, Constant + " Saved", Toast.LENGTH_LONG).show();
 
 
 

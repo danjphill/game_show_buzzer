@@ -25,8 +25,6 @@ This is currently still a work in progress.
 
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171741.png" alt=""  width="216" height="400" />
 
-<img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171425.png?token=AFMMUSGLT2ATAOYRB6GJ5SC5ISYN4" alt="" width="216" height="400" />
-
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171944.png" alt="" width="216" height="400" />
 
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-172022.png" alt="" width="216" height="400" />

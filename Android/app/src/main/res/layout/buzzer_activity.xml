@@ -102,11 +102,4 @@
         android:visibility="gone"
         />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:src="@mipmap/ct_logo"
-        android:layout_centerHorizontal="true"
-       android:layout_alignParentBottom="true"
-        android:scaleType="fitCenter"/>
 </RelativeLayout>

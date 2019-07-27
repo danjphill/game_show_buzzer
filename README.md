@@ -21,9 +21,13 @@ This is currently still a work in progress.
 
 ## Screenshots 
 
+#Android App
+
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171700.png?token=AFMMUSHFOM2QNKI5BETPPVC5ISYRA" alt="" width="216" height="400" /> <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171741.png" alt=""  width="216" height="400" /> <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-171944.png" alt="" width="216" height="400" />
 
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-172022.png" alt="" width="216" height="400" /><img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-173821.png" alt="" width="216" height="400" /><img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/device-2019-07-26-173915.png" alt="" width="216" height="400" />
+
+#Website GUI
 
 <img src="https://raw.githubusercontent.com/danjphill/game_show_buzzer/master/Screenshots/Screen%20Shot%202019-07-26%20at%2010.50.37%20PM.png" alt="" width="1800" height="400" />
 

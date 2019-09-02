@@ -6,7 +6,7 @@ This is currently still a work in progress.
 ## Getting Started
 * `pip install flask`
 * Download the repo and locate the flask server files and run `game_show_server.py`. 
-* Open the `android` folder in Android Studio and build and deplpoy to an android phone. 
+* Open the `android` folder in Android Studio and build and deploy to an android phone. 
 
 ### Prerequisites
 
